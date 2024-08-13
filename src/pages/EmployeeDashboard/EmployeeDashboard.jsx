@@ -6,10 +6,13 @@ import { useEffect, useState } from 'react';
 import { AddEmployeeModal } from '../../components/AddEmployeeModal/addEmployeeModal';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchemployeeData } from '../../redux/EmployeeDetails/EmployeeDetailsActions';
+import DeleteConfirmationModal from '../../components/DeleteConfirmation/DeleteConfirmationModal';
 
 function EmployeeDashboard() {
     const { isModalOpen } = useSelector((state) => state.isModalOpen);
     const isEdit = useSelector((state) => state.isModalOpen.isEdit);
+    const isDelete = useSelector((state) => state.isModalOpen.isDelete)
+    console.log('delete', isDelete)
 
     useEffect(() => {
         if (!isModalOpen) {
@@ -23,9 +26,9 @@ function EmployeeDashboard() {
     const handleSearchBox = (event) => {
         setSearchFor(event.target.value);
         searchEmployee(searchFor)
+        console.log(searchFor)
     }
     const employeeData = useSelector(state => state.employeeDetails);
-    console.log(employeeData)
     const searchEmployee = (searchFor) => {
         const filteredEmployees = employeeData.filter(employee =>
             employee.fname.includes(searchFor) ||
@@ -33,12 +36,14 @@ function EmployeeDashboard() {
             employee.designation.includes(searchFor)
         );
         setFilteredEmployee(filteredEmployees);
+        console.log(filteredEmployee)
         return filteredEmployees;
     };
 
     return (
         <div className="employee-dashboard-container">
             {(isModalOpen || isEdit) && <AddEmployeeModal />}
+            {(isDelete && <DeleteConfirmationModal />)}
             <EmployeeDashboardHeader />
             <div className='welcome-container'>
                 <p>Welcome to Employee Dashboard</p>

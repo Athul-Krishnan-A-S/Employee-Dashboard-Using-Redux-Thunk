@@ -4,7 +4,7 @@ import { format } from 'date-fns';
 import Button from '../Button/Button';
 import './employeeTable.css';
 import { fetchemployeeData, deleteEmployee } from '../../redux/EmployeeDetails/EmployeeDetailsActions';
-import { toggleEdit, toggleModalState } from '../../redux/ModalState/ModalStateAction';
+import { toggleDelete, toggleEdit, toggleModalState } from '../../redux/ModalState/ModalStateAction';
 
 class EmployeesTable extends Component {
     constructor(props) {
@@ -12,7 +12,8 @@ class EmployeesTable extends Component {
         this.state = {
             loading: true,
             error: null,
-            employeeData: this.props.employeeDataFromState
+            employeeData: this.props.employeeDataFromState,
+            filteredEmployee: props.filteredEmployee
         };
     }
 
@@ -42,7 +43,8 @@ class EmployeesTable extends Component {
     }
 
     handleDeleteEmployee = (id) => {
-        this.props.deleteEmployee(id);
+        this.props.toggleDelete();
+        localStorage.setItem('deleteId', id)
     }
 
     handleToggleEdit = (id) => {
@@ -105,14 +107,15 @@ class EmployeesTable extends Component {
 const mapStateToProps = (state) => ({
     isModalOpen: state.isModalOpen,
     employeeDataFromState: state.employeeDetails,
-    filteredEmployee: state.filteredEmployee
+    isDelete: state.isDelete,
 });
 
 const mapDispatchToProps = {
     fetchemployeeData,
     deleteEmployee,
     toggleEdit,
-    toggleModalState
+    toggleModalState,
+    toggleDelete,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(EmployeesTable);

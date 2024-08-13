@@ -1,8 +1,10 @@
-import { TOGGLE_EDIT, TOGGLE_MODAL } from "./ModalStateTypes";
+import { TOGGLE_EDIT, TOGGLE_MODAL ,TOGGLE_DELETE,CONFIRM_DELETE} from "./ModalStateTypes";
 
 const initialState = {
     isModalOpen: false,
     isEdit: false,
+    isDelete:false,
+    confirmDelete:false,
 };
 
 const isModalOpenReducer = (state = initialState, action) => {
@@ -16,6 +18,16 @@ const isModalOpenReducer = (state = initialState, action) => {
             return {
                 ...state,
                 isEdit: !state.isEdit
+            };
+        case TOGGLE_DELETE:
+            return {
+                ...state,
+                isDelete: !state.isDelete
+            };
+        case CONFIRM_DELETE:
+            return {
+                ...state,
+                confirmDelete: !state.confirmDelete
             };
         default:
             return state;
